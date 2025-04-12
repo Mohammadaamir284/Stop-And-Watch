@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        
         .clock {
             width: 300px;
             height: 300px;
@@ -60,8 +61,13 @@
 </head>
 
 <body>
+    <audio id="alarmSound" src="IPHONE NOTIFICATION SOUND EFFECT (PING_DING) - SoundsAreUs.mp3" preload="auto"></audio>
     <div class="continer">
+       
+        
+        
         <div class="t">
+            <input type="text" name="" id="tm">
             <div id="time" class="t2">00:00:00:00</div>
 
             <div class="clock">
@@ -93,7 +99,22 @@
             let m = minutes < 10 ? "0" + minutes : minutes
             let s = seconds < 10 ? "0" + seconds : seconds
             let ms = milliseconds < 10 ? "0" + milliseconds : milliseconds
-            display.innerHTML = `${h}:${m}:${s}:${ms}`
+            let currentTime = `${h}:${m}:${s}:${ms}`
+            display.innerHTML = currentTime;
+
+            const input = document.getElementById("tm").value.trim();
+
+            if (!isNaN(input) && input !== "") {
+                let string = parseInt(input);
+                let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+              
+                if (totalSeconds % string === 0 && milliseconds === 0) {
+                    const audio = document.getElementById("alarmSound")
+                    audio.currentTime = 0
+                    audio.play()
+                }
+            }
         }
 
         function stopwatch(params) {
@@ -110,8 +131,14 @@
                     }
                 }
             }
+
             updatetime()
+
+
         }
+
+
+
         function Start() {
             if (timer !== null) return
             timer = setInterval(stopwatch, 10)
@@ -127,6 +154,8 @@
         }
 
 
+
+
         function updateClock() {
             const now = new Date();
 
@@ -139,11 +168,7 @@
             const minDeg = (min * 6) + (sec * 0.1);  // 360 / 60 = 6
             const hrDeg = (hr % 12) * 30 + (min * 0.5); // 360 / 12 = 30
 
-            let cs = sec
-            let cm  = min
-            let ch  = hr
-
-            document.getElementById("cc").textContent = `${ch}:${cm}:${cs}`
+            document.getElementById("cc").textContent = `${hr}:${min}:${sec}`
 
             document.getElementById("second").style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
             document.getElementById("minute").style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
